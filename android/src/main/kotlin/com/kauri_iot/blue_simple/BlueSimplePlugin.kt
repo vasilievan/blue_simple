@@ -11,11 +11,10 @@ import io.flutter.plugin.common.MethodChannel.Result
 /** BlueSimplePlugin */
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
-  private final String kauriUUID = "04c6093b-0000-1000-8000-00805f9b34fb";
-  private lateinit var mac: String
+  private val kauriUUID: String = "04c6093b-0000-1000-8000-00805f9b34fb"
   private val channel = "bluetooth_simple/print"
+  private lateinit var mac: String
   private lateinit var outputStream : OutputStream
-
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -27,7 +26,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     if (call.method == "getPlatformVersion") {
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else if (call.method == "connect") {
-      mac: String = call.arguments.toString();
+      mac = call.arguments.toString();
       val connected = connect()
       if (outputStream != null) {
         result.success(true)
