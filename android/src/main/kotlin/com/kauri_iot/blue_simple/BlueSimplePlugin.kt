@@ -16,7 +16,6 @@ import java.io.OutputStream
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private val kauriUUID: String = "04c6093b-0000-1000-8000-00805f9b34fb"
-  private val channel = "bluetooth_simple/print"
   private lateinit var mac: String
   private lateinit var outputStream : OutputStream
   private lateinit var channel : MethodChannel
@@ -51,8 +50,8 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun writeBytes(bytes: ByteArray) {
-    os.write(bytes)
-    os.flush()
+    outputStream.write(bytes)
+    outputStream.flush()
   }
 
   private fun closeOutputStream() {
