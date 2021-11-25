@@ -18,4 +18,12 @@ class BlueSimple {
     } on PlatformException catch (e) {}
     return result;
   }
+
+  Future<bool> writeBytes ({required List<int> bytes}) async {
+    bool result = false;
+    try {
+      result = await _channel.invokeMethod('writeBytes', bytes);
+    } on PlatformException catch (e) {}
+    return result;
+  }
 }
