@@ -26,4 +26,10 @@ class BlueSimple {
     } on PlatformException catch (e) {}
     return result;
   }
+
+  void closeOutputStream () {
+    try {
+      _channel.invokeMethod('closeOutputStream');
+    } on PlatformException catch (e) {}
+  }
 }

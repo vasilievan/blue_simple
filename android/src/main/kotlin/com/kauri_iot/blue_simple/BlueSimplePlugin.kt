@@ -49,6 +49,8 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         result.success(true)
       }
       result.success(false)
+    } else if (call.method == "closeOutputStream") {
+      closeOutputStream()
     } else {
       result.notImplemented()
     }
