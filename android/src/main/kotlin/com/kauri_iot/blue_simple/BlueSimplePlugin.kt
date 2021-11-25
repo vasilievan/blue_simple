@@ -10,7 +10,7 @@ import io.flutter.plugin.common.MethodChannel.Result
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import java.util.*
-
+import java.io.OutputStream
 
 /** BlueSimplePlugin */
 
