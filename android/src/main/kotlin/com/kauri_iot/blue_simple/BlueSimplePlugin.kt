@@ -19,9 +19,12 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var mac: String
   private lateinit var outputStream : OutputStream
   private lateinit var channel : MethodChannel
+  private lateinit var context : Context
+
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "blue_simple")
+    context = flutterPluginBinding.applicationContext
     channel.setMethodCallHandler(this)
   }
 
@@ -41,7 +44,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun connect() {
-    val manager = this.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     val adapter = manager.adapter
     val device = adapter.getRemoteDevice(mac)
     val socket = device.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
