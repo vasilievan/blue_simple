@@ -44,7 +44,6 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
       for (index in list.indices) {
         bytes[index] = list[index].toByte()
       }
-      
       if (outputStream != null) {
         writeBytes(bytes)
         result.success(true)
