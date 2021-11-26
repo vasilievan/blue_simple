@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 
@@ -15,7 +16,9 @@ class BlueSimple {
     bool result = false;
     try {
       result = await _channel.invokeMethod('connect', mac);
-    } on PlatformException catch (e) {}
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
     return result;
   }
 
@@ -23,17 +26,27 @@ class BlueSimple {
     bool result = false;
     try {
       result = await _channel.invokeMethod('writeBytes', bytes);
-    } on PlatformException catch (e) {}
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
     return result;
   }
 
-  Future<bool> isBluetoothEnabled() {
-    return _channel.invokeMethod('isBluetoothEnabled') as Future<bool>;
+  Future<bool> isBluetoothEnabled() async {
+    bool result = false;
+    try {
+      result = await _channel.invokeMethod('isBluetoothEnabled');
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
+    return result;
   }
 
   void closeOutputStream () {
     try {
       _channel.invokeMethod('closeOutputStream');
-    } on PlatformException catch (e) {}
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
   }
 }
