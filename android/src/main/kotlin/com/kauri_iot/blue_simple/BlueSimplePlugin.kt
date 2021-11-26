@@ -79,13 +79,17 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     try {
       device = adapter.getRemoteDevice(mac)
     } catch (e: IllegalArgumentException) {
-      return false;
+    }
+    if (device == null) {
+      return false
     }
     var socket: BluetoothSocket? = null
     try {
       device!!.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
     } catch (e: IOException) {
-      return false;
+    }
+    if (socket == null) {
+      return false
     }
     socket!!.connect()
     outputStream = socket.outputStream
