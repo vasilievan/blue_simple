@@ -21,7 +21,7 @@ import java.io.IOException
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private val kauriUUID: String = "04c6093b-0000-1000-8000-00805f9b34fb"
   private lateinit var mac: String
-  private lateinit var outputStream : OutputStream
+  private var outputStream : OutputStream? = null
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
 
@@ -97,12 +97,12 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun writeBytes(bytes: ByteArray) {
-    outputStream.write(bytes)
-    outputStream.flush()
+    outputStream!!.write(bytes)
+    outputStream!!.flush()
   }
 
   private fun closeOutputStream() {
-    outputStream.close()
+    outputStream!!.close()
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
