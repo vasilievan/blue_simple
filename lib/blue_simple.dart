@@ -26,7 +26,7 @@ class BlueSimple {
     } on PlatformException catch (e) {}
     return result;
   }
-  
+
   Future<bool> isBluetoothEnabled() {
     return _channel.invokeMethod('isBluetoothEnabled') as Future<bool>;
   }
