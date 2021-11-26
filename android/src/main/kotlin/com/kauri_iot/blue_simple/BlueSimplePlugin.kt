@@ -21,7 +21,6 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
 
-
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "blue_simple")
     context = flutterPluginBinding.applicationContext
@@ -49,10 +48,23 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         result.success(true)
       }
       result.success(false)
+    } else if (call.method == "isBluetoothEnabled") {
+      result.success(isBluetoothEnabled())
     } else if (call.method == "closeOutputStream") {
       closeOutputStream()
     } else {
       result.notImplemented()
+    }
+  }
+
+  private fun isBluetoothEnabled(): Boolean {
+    val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    if (manager == null) {
+      return false;
+    } else if (manager.enabled) {
+      return true;
+    } else {
+      return false;
     }
   }
 
