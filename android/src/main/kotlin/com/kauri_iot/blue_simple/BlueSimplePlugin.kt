@@ -11,6 +11,10 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import java.util.*
 import java.io.OutputStream
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
+import java.lang.IllegalArgumentException
+import java.io.IOException
 
 /** BlueSimplePlugin */
 
@@ -71,14 +75,20 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private fun connect(): Boolean {
     val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     val adapter = manager.adapter
+    var device: BluetoothDevice? = null;
     try {
-      val device = adapter.getRemoteDevice(mac)
-      val socket = device.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
-      socket.connect()
-      outputStream = socket.outputStream
-    } catch (e: Exception) {
+      device = adapter.getRemoteDevice(mac)
+    } catch (e: IllegalArgumentException) {
       return false;
     }
+    var socket: BluetoothSocket? = null
+    try {
+      device.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
+    } catch (e: IOException) {
+      return false;
+    }
+    socket.connect()
+    outputStream = socket.outputStream
     return true;
   }
 
