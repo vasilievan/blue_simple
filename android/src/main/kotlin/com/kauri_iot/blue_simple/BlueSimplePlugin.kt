@@ -85,7 +85,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     }
     var socket: BluetoothSocket? = null
     try {
-      device!!.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
+      socket = device!!.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
     } catch (e: IOException) {
     }
     if (socket == null) {
