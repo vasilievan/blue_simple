@@ -16,6 +16,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import java.lang.IllegalArgumentException
 import java.io.IOException
+import java.lang.System.currentTimeMillis
 
 /** BlueSimplePlugin */
 
@@ -113,16 +114,14 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     val time = currentTimeMillis()
     val result = mutableListOf<Int>()
     var now: Long
-    thread {
-      var nextByte = inputStream!!.read()
-      while (true) {
-        now = currentTimeMillis()
-        result.add(nextByte)
-        if (nextByte == -1 || (now - time >= 2000)) {
-          break
-        }
-        nextByte = inputStream!!.read()
+    var nextByte = inputStream!!.read()
+    while (true) {
+      now = currentTimeMillis()
+      result.add(nextByte)
+      if (nextByte == -1 || (now - time >= 2000)) {
+        break
       }
+      nextByte = inputStream!!.read()
     }
     return result
   }
