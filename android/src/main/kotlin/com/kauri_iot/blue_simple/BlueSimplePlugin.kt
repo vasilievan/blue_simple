@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import java.util.*
 import java.io.OutputStream
+import java.io.InputStream
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import java.lang.IllegalArgumentException
@@ -22,6 +23,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private val kauriUUID: String = "04c6093b-0000-1000-8000-00805f9b34fb"
   private lateinit var mac: String
   private var outputStream : OutputStream? = null
+  private var inputStream : InputStream? = null
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
 
@@ -56,6 +58,11 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
       result.success(isBluetoothEnabled())
     } else if (call.method == "closeOutputStream") {
       closeOutputStream()
+    } else if (call.method == "closeInputStream") {
+      closeInputStream()
+    } else if (call.method == "readBytes") {
+      val bytes = readBytes()
+      result.success(bytes)
     } else {
       result.notImplemented()
     }
@@ -73,32 +80,41 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun connect(): Boolean {
-    val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    val manager = applicationContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     val adapter = manager.adapter
     var device: BluetoothDevice? = null;
     try {
       device = adapter.getRemoteDevice(mac)
-    } catch (e: IllegalArgumentException) {
+    } catch (e: java.lang.IllegalArgumentException) {
     }
     if (device == null) {
       return false
     }
     var socket: BluetoothSocket? = null
     try {
-      socket = device!!.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
+      socket = device.createRfcommSocketToServiceRecord(UUID.fromString(kauriUUID))
     } catch (e: IOException) {
     }
     if (socket == null) {
       return false
     }
-    socket!!.connect()
+    socket.connect()
     outputStream = socket.outputStream
+    inputStream = socket.inputStream
     return true;
   }
 
   private fun writeBytes(bytes: ByteArray) {
     outputStream!!.write(bytes)
     outputStream!!.flush()
+  }
+
+  private fun readBytes(): ByteArray {
+    return inputStream!!.readBytes();
+  }
+
+  private fun closeInputStream() {
+    inputStream!!.close()
   }
 
   private fun closeOutputStream() {

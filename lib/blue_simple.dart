@@ -32,6 +32,17 @@ class BlueSimple {
     return result;
   }
 
+  Future<List<int>> readBytes ({required List<int> bytes}) async {
+    List<int> result = List.empty();
+    try {
+      var preresult = await _channel.invokeMethod('readBytes', bytes);
+      result = preresult;
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
+    return result;
+  }
+
   Future<bool> isBluetoothEnabled() async {
     bool result = false;
     try {
@@ -45,6 +56,14 @@ class BlueSimple {
   void closeOutputStream () {
     try {
       _channel.invokeMethod('closeOutputStream');
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  void closeInputStream () {
+    try {
+      _channel.invokeMethod('closeInputStream');
     } on PlatformException catch (e) {
       log(e.toString());
     }
