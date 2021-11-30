@@ -32,10 +32,10 @@ class BlueSimple {
     return result;
   }
 
-  Future<List<int>> readBytes ({required List<int> bytes}) async {
+  Future<List<int>> readBytes () async {
     List<int> result = List.empty();
     try {
-      var preresult = await _channel.invokeMethod('readBytes', bytes);
+      var preresult = await _channel.invokeMethod('readBytes');
       result = preresult;
     } on PlatformException catch (e) {
       log(e.toString());
