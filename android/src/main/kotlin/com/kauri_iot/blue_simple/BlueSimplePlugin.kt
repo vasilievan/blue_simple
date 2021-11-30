@@ -109,8 +109,22 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     outputStream!!.flush()
   }
 
-  private fun readBytes(): ByteArray {
-    return inputStream!!.readBytes();
+  private fun readBytes(): List<Int> {
+    val time = currentTimeMillis()
+    val result = mutableListOf<Int>()
+    var now: Long
+    thread {
+      var nextByte = socket.inputStream.read()
+      while (true) {
+        now = currentTimeMillis()
+        result.add(nextByte)
+        if (nextByte == -1 || (now - time >= 2000)) {
+          break
+        }
+        nextByte = socket.inputStream.read()
+      }
+    }
+    return result
   }
 
   private fun closeInputStream() {
