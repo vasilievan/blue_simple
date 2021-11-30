@@ -114,14 +114,14 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     val result = mutableListOf<Int>()
     var now: Long
     thread {
-      var nextByte = socket.inputStream.read()
+      var nextByte = inputStream!!.read()
       while (true) {
         now = currentTimeMillis()
         result.add(nextByte)
         if (nextByte == -1 || (now - time >= 2000)) {
           break
         }
-        nextByte = socket.inputStream.read()
+        nextByte = inputStream!!.read()
       }
     }
     return result
