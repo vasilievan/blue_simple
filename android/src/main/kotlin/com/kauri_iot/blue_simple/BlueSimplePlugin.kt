@@ -80,7 +80,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun connect(): Boolean {
-    val manager = applicationContext.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+    val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     val adapter = manager.adapter
     var device: BluetoothDevice? = null;
     try {
