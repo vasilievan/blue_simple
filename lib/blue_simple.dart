@@ -7,12 +7,7 @@ import 'package:flutter/services.dart';
 class BlueSimple {
   static const MethodChannel _channel = MethodChannel('blue_simple');
 
-  static Future<String?> get platformVersion async {
-    final String? version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
-  }
-
-  Future<bool> connect({required String mac}) async {
+  Future<bool> connect({required String mac, required String uuid}) async {
     bool result = false;
     try {
       result = await _channel.invokeMethod('connect', mac);
@@ -64,6 +59,14 @@ class BlueSimple {
   void closeInputStream () {
     try {
       _channel.invokeMethod('closeInputStream');
+    } on PlatformException catch (e) {
+      log(e.toString());
+    }
+  }
+
+  void closeSocket () {
+    try {
+      _channel.invokeMethod('closeSocket');
     } on PlatformException catch (e) {
       log(e.toString());
     }
