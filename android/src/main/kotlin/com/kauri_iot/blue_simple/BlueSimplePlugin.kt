@@ -27,7 +27,7 @@ import java.util.concurrent.Executors
 /** BlueSimplePlugin */
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
-  private lateinit var kauriUUID: String
+  private lateinit var uuid: String
   private lateinit var mac: String
   private lateinit var outputStream : OutputStream
   private lateinit var inputStream : InputStream
@@ -51,8 +51,8 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "connect") {
-      mac = call.argument("mac");
-      kauriUUID = call.argument("uuid");
+      mac = call.argument("mac").toString();
+      kauriUUID = call.argument("uuid").toString();
       result.success(connect())
     } else if (call.method == "writeBytes") {
       val list: List<Int> = call.arguments as List<Int>
@@ -114,7 +114,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun readBytes(): List<Int> {
-    executorService.submit {
+    return executorService.submit {
       val time = currentTimeMillis()
       val result = mutableListOf<Int>()
       var now: Long
@@ -128,7 +128,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         nextByte = inputStream!!.read()
       }
       return result
-    }
+    }.get()
   }
 
   private fun closeInputStream() {
