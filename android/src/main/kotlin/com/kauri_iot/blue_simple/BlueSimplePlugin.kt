@@ -50,8 +50,8 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "connect") {
-      mac = call.argument("mac").toString();
-      kauriUUID = call.argument("uuid").toString();
+      mac = call.argument("mac") as String;
+      kauriUUID = call.argument("uuid") as String;
       result.success(connect())
     } else if (call.method == "writeBytes") {
       val list: List<Int> = call.arguments as List<Int>
@@ -127,7 +127,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         nextByte = inputStream!!.read()
       }
       return result
-    }.get()
+    }.get() as List<Int>
   }
 
   private fun closeInputStream() {
