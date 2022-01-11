@@ -51,33 +51,30 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "connect") {
-      mac = call.argument<String>("mac")!!;
-      uuid = call.argument<String>("uuid")!!;
-      result.success(connect())
-    } else if (call.method == "writeBytes") {
-      val list: List<Int> = call.arguments as List<Int>
-      val bytes: ByteArray = ByteArray(list.size)
-      for (index in list.indices) {
-        bytes[index] = list[index].toByte()
+    when (call.method) {
+      "connect" -> {
+        mac = call.argument<String>("mac")!!;
+        uuid = call.argument<String>("uuid")!!;
+        result.success(connect())
       }
-      if (this::outputStream.isInitialized) {
-        writeBytes(bytes)
-        result.success(true)
+      "writeBytes" -> {
+        val list: List<Int> = call.arguments as List<Int>
+        val bytes: ByteArray = ByteArray(list.size)
+        for (index in list.indices) {
+          bytes[index] = list[index].toByte()
+        }
+        if (this::outputStream.isInitialized) {
+          writeBytes(bytes)
+          result.success(true)
+        }
+        result.success(false)
       }
-      result.success(false)
-    } else if (call.method == "isBluetoothEnabled") {
-      result.success(isBluetoothEnabled())
-    } else if (call.method == "closeOutputStream") {
-      closeOutputStream()
-    } else if (call.method == "closeInputStream") {
-      closeInputStream()
-    } else if (call.method == "closeSocket") {
-      closeSocket()
-    } else if (call.method == "readBytes") {
-      result.success(readBytes())
-    } else {
-      result.notImplemented()
+      "isBluetoothEnabled" -> result.success(isBluetoothEnabled())
+      "closeOutputStream" -> closeOutputStream()
+      "closeInputStream" -> closeInputStream()
+      "closeSocket" -> closeSocket()
+      "readBytes" -> result.success(readBytes())
+      else -> result.notImplemented()
     }
   }
 
