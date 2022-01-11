@@ -100,8 +100,9 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   private fun isBluetoothEnabled(): Boolean {
     val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager?
-    if (manager != null) {
-      return manager.adapter.isEnabled
+    val adapter = manager.adapter
+    if (manager != null && adapter != null) {
+      return adapter.isEnabled
     }
     return false
   }
