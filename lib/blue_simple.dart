@@ -10,7 +10,7 @@ class BlueSimple {
   Future<bool> connect({required String mac, required String uuid}) async {
     bool result = false;
     try {
-      result = await _channel.invokeMethod('connect', mac);
+      result = await _channel.invokeMethod('connect', {mac, uuid});
     } on PlatformException catch (e) {
       log(e.toString());
     }
