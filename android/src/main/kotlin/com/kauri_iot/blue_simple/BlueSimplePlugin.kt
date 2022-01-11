@@ -83,7 +83,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   private fun connect(): Boolean {
     val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-    val device: BluetoothDevice?
+    var device: BluetoothDevice? =  null
     try {
       device = manager.adapter.getRemoteDevice(mac!!)
     } catch (e: IllegalArgumentException) {
