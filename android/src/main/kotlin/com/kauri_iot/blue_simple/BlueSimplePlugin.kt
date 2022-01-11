@@ -87,13 +87,13 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     try {
       device = manager.adapter.getRemoteDevice(mac!!)
     } catch (e: IllegalArgumentException) {
-      return false
     }
+    if (device == null) return false
     try {
       socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid!!))
     } catch (e: IOException) {
-      return false
     }
+    if (socket == null) return false
     outputStream = socket.outputStream
     inputStream = socket.inputStream
     return true
