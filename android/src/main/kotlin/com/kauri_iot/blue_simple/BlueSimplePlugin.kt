@@ -79,21 +79,22 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun connect(): Boolean {
+    var result = false
     val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     var device: BluetoothDevice? =  null
     try {
       device = manager.adapter.getRemoteDevice(mac!!)
     } catch (e: IllegalArgumentException) {
     }
-    if (device == null) return false
     try {
       socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid!!))
+      outputStream = socket.outputStream
+      inputStream = socket.inputStream
+      result = true
     } catch (e: IOException) {
+      result = false
     }
-    if (socket == null) return false
-    outputStream = socket.outputStream
-    inputStream = socket.inputStream
-    return true
+    return result
   }
 
   private fun isBluetoothEnabled(): Boolean {
