@@ -127,7 +127,6 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         }
         nextByte = inputStream!!.read()
       }
-      return result
     }.get() as List<Int>
   }
 
