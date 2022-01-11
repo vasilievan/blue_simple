@@ -16,6 +16,7 @@ import java.io.InputStream
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.bluetooth.BluetoothAdapter
 
 import java.io.IOException
 import java.lang.IllegalArgumentException
