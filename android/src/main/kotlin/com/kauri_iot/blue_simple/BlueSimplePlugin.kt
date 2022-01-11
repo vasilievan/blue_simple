@@ -53,9 +53,10 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     when (call.method) {
       "connect" -> {
-        mac = call.argument<String>("mac")!!;
-        uuid = call.argument<String>("uuid")!!;
-        result.success(connect())
+        mac = call.argument<String>("mac")!!
+        uuid = call.argument<String>("uuid")!!
+        val connect = connect()
+        result.success(connect)
       }
       "writeBytes" -> {
         val list: List<Int> = call.arguments as List<Int>
@@ -81,7 +82,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private fun connect(): Boolean {
     var result = false
     val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-    var device: BluetoothDevice? =  null
+    var device: BluetoothDevice? = null
     try {
       device = manager.adapter.getRemoteDevice(mac!!)
     } catch (e: IllegalArgumentException) {
