@@ -26,8 +26,8 @@ import java.util.concurrent.Executors
 /** BlueSimplePlugin */
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
-  private lateinit var uuid: String
-  private lateinit var mac: String
+  private var uuid: String?
+  private var mac: String?
   private lateinit var outputStream : OutputStream
   private lateinit var inputStream : InputStream
   private lateinit var channel : MethodChannel
@@ -50,8 +50,8 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "connect") {
-      mac = call.argument("mac") as String;
-      kauriUUID = call.argument("uuid") as String;
+      mac = call.argument("mac") as String?;
+      uuid = call.argument("uuid") as String?;
       result.success(connect())
     } else if (call.method == "writeBytes") {
       val list: List<Int> = call.arguments as List<Int>
@@ -83,12 +83,12 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
     val device: BluetoothDevice?
     try {
-      device = manager.adapter.getRemoteDevice(mac)
+      device = manager.adapter.getRemoteDevice(mac!!)
     } catch (e: IllegalArgumentException) {
       return false
     }
     try {
-      socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid))
+      socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid!!))
     } catch (e: IOException) {
       return false
     }
