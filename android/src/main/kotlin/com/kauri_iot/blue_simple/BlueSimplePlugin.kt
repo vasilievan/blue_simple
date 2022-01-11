@@ -22,12 +22,13 @@ import java.lang.IllegalArgumentException
 
 import java.lang.System.currentTimeMillis
 import java.util.concurrent.Executors
+import java.util.UUID
 
 /** BlueSimplePlugin */
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
-  private var uuid: String?
-  private var mac: String?
+  private var uuid: String? = null
+  private var mac: String? = null
   private lateinit var outputStream : OutputStream
   private lateinit var inputStream : InputStream
   private lateinit var channel : MethodChannel
