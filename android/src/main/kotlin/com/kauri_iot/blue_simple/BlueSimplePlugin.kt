@@ -89,6 +89,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     }
     try {
       socket = device!!.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid!!))
+      socket.connect()
       outputStream = socket!!.outputStream
       inputStream = socket!!.inputStream
       result = true
