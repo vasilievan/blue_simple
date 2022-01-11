@@ -87,11 +87,11 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     } catch (e: IllegalArgumentException) {
     }
     try {
-      socket = device.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid!!))
-      outputStream = socket.outputStream
-      inputStream = socket.inputStream
+      socket = device!!.createInsecureRfcommSocketToServiceRecord(UUID.fromString(uuid!!))
+      outputStream = socket!!.outputStream
+      inputStream = socket!!.inputStream
       result = true
-    } catch (e: IOException) {
+    } catch (e: Exception) {
       result = false
     }
     return result
