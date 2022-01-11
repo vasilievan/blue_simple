@@ -28,8 +28,8 @@ import java.util.UUID
 /** BlueSimplePlugin */
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
-  private var uuid: String? = null
-  private var mac: String? = null
+  private lateinit var  uuid: String
+  private lateinit var  mac: String
   private lateinit var outputStream : OutputStream
   private lateinit var inputStream : InputStream
   private lateinit var channel : MethodChannel
@@ -52,8 +52,8 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "connect") {
-      mac = call.argument<String>("mac");
-      uuid = call.argument<String>("uuid");
+      mac = call.argument<String>("mac")!!;
+      uuid = call.argument<String>("uuid")!!;
       result.success(connect())
     } else if (call.method == "writeBytes") {
       val list: List<Int> = call.arguments as List<Int>
