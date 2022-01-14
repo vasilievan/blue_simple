@@ -59,11 +59,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         result.success(connect)
       }
       "writeBytes" -> {
-        val list: List<Int> = call.arguments as List<Int>
-        val bytes: ByteArray = ByteArray(list.size)
-        for (index in list.indices) {
-          bytes[index] = list[index].toByte()
-        }
+        val bytes: ByteArray = call.arguments as ByteArray
         if (this::outputStream.isInitialized) {
           writeBytes(bytes)
           result.success(true)
