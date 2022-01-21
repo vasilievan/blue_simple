@@ -53,11 +53,12 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
       }
       "writeBytes" -> {
         val bytes: ByteArray = call.arguments as ByteArray
+        val myResult = false
         if (this::outputStream.isInitialized) {
           writeBytes(bytes)
-          result.success(true)
+          myResult = true
         }
-        result.success(false)
+        result.success(myResult)
       }
       "isBluetoothEnabled" -> result.success(isBluetoothEnabled())
       "closeOutputStream" -> closeOutputStream()
