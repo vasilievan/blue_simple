@@ -115,10 +115,10 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     val sb = StringBuilder()
     try {
       while (inputStream.read().also { readByte = it } != -1) {
-        sb.append(readByte.toChar())
         if (readByte == 255) {
           break
         }
+        sb.append(readByte.toChar())
       }
     } catch (e: IOException) {
       println(e)
