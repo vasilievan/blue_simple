@@ -27,8 +27,8 @@ class BlueSimple {
     return result;
   }
 
-  Future<List<int>> readBytesFromSocket () async {
-    List<int> result = List.empty();
+  Future<String> readBytesFromSocket () async {
+    String result = "";
     try {
       var preresult = await _channel.invokeMethod('readBytesFromSocket');
       result = preresult;

@@ -21,6 +21,7 @@ import android.bluetooth.BluetoothAdapter
 import java.io.IOException
 import java.lang.IllegalArgumentException
 
+import java.lang.StringBuilder
 import java.lang.System.currentTimeMillis
 import java.util.concurrent.Executors
 import java.util.UUID
@@ -35,13 +36,6 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
   private lateinit var socket: BluetoothSocket
-  private val executorService = Executors.newSingleThreadExecutor {
-    val thread = Thread(
-            it
-    )
-    thread.isDaemon = true
-    thread
-  }
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "blue_simple")
@@ -104,24 +98,21 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun writeBytes(bytes: ByteArray) {
-    executorService.submit {
-      outputStream.write(bytes)
-      outputStream.flush()
-    }
+    outputStream.write(bytes)
+    outputStream.flush()
   }
 
-  private fun readBytesFromSocket(): List<Int> {
-    return executorService.submit {
-      var readByte: Int
-      val result = mutableListOf<Int>()
-      try {
-        while (inputStream.read().also { readByte = it } != -1) {
-          result.add(readByte)
-        }
-      } catch (e: IOException) {
-        socket.close()
+  private fun readBytesFromSocket(): String {
+    var readByte: Int
+    val sb = StringBuilder()
+    try {
+      while (inputStream.read().also { readByte = it } != -1) {
+        sb.append(readByte.toChar())
       }
-    }.get() as List<Int>
+    } catch (e: IOException) {
+      socket.close()
+    }
+    return sb.toString()
   }
 
   private fun closeInputStream() {
