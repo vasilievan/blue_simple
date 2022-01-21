@@ -116,7 +116,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
       val result = mutableListOf<Int>()
       try {
         while (inputStream.read().also { readByte = it } != -1) {
-          result.add(readByte.toInt())
+          result.add(readByte)
         }
       } catch (e: IOException) {
         socket.close()
