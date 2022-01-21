@@ -26,6 +26,8 @@ import java.lang.System.currentTimeMillis
 import java.util.concurrent.Executors
 import java.util.UUID
 
+import kotlin.concurrent.thread
+
 /** BlueSimplePlugin */
 
 class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
