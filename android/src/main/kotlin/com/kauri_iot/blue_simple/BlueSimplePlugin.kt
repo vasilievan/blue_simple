@@ -108,18 +108,19 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun readBytesFromSocket(): String {
-    thread(isDaemon = true) {
-      var readByte: Int
-      val sb = StringBuilder()
-      try {
-        while (inputStream.read().also { readByte = it } != -1) {
-          sb.append(readByte.toChar())
+    var readByte: Int
+    val sb = StringBuilder()
+    try {
+      while (inputStream.read().also { readByte = it } != -1) {
+        sb.append(readByte.toChar())
+        if (readByte == 255) {
+          break
         }
-      } catch (e: IOException) {
-        println(e)
       }
-      return sb.toString()
+    } catch (e: IOException) {
+      println(e)
     }
+    return sb.toString()
   }
 
   private fun closeInputStream() {
