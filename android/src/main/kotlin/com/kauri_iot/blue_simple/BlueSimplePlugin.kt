@@ -99,21 +99,25 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun writeBytes(bytes: ByteArray) {
-    outputStream.write(bytes)
-    outputStream.flush()
+    thread(isDaemon = true) {
+      outputStream.write(bytes)
+      outputStream.flush()
+    }
   }
 
   private fun readBytesFromSocket(): String {
-    var readByte: Int
-    val sb = StringBuilder()
-    try {
-      while (inputStream.read().also { readByte = it } != -1) {
-        sb.append(readByte.toChar())
+    thread(isDaemon = true) {
+      var readByte: Int
+      val sb = StringBuilder()
+      try {
+        while (inputStream.read().also { readByte = it } != -1) {
+          sb.append(readByte.toChar())
+        }
+      } catch (e: IOException) {
+        println(e)
       }
-    } catch (e: IOException) {
-      socket.close()
+      return sb.toString()
     }
-    return sb.toString()
   }
 
   private fun closeInputStream() {
