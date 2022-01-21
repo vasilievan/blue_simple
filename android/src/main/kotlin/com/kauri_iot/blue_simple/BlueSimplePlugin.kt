@@ -69,7 +69,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
       "closeOutputStream" -> closeOutputStream()
       "closeInputStream" -> closeInputStream()
       "closeSocket" -> closeSocket()
-      "readBytes" -> result.success(readBytes())
+      "readBytesFromSocket" -> result.success(readBytesFromSocket())
       else -> result.notImplemented()
     }
   }
