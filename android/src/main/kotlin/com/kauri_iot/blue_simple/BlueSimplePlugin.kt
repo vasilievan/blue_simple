@@ -55,7 +55,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
       }
       "writeBytes" -> {
         val bytes: ByteArray = call.arguments as ByteArray
-        val myResult = false
+        var myResult = false
         if (this::outputStream.isInitialized) {
           writeBytes(bytes)
           myResult = true
