@@ -108,6 +108,9 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun readBytesFromSocket(): String {
+    if (this::inputStream.isInitialized == false) {
+      return ""
+    }
     var readByte: Int
     val sb = StringBuilder()
     try {
