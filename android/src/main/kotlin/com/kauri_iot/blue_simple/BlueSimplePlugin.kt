@@ -35,7 +35,6 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var context : Context
   private lateinit var socket: BluetoothSocket
-  private val timeRestriction = 5000
   private val executorService = Executors.newSingleThreadExecutor {
     val thread = Thread(
             it
@@ -111,19 +110,16 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
     }
   }
 
-  private fun readBytes(): List<Int> {
+  private fun readBytesFromSocket(): List<Int> {
     return executorService.submit {
-      val time = currentTimeMillis()
+      var readByte: Int
       val result = mutableListOf<Int>()
-      var now: Long
-      var nextByte = inputStream!!.read()
-      while (true) {
-        now = currentTimeMillis()
-        result.add(nextByte)
-        if (nextByte == -1 || (now - time >= timeRestriction)) {
-          break
+      try {
+        while (inputStream.read().also { readByte = it } != -1) {
+          result.add(readByte.toInt())
         }
-        nextByte = inputStream!!.read()
+      } catch (e: IOException) {
+        socket.close()
       }
     }.get() as List<Int>
   }
