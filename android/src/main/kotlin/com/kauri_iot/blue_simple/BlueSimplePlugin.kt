@@ -102,8 +102,12 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
 
   private fun writeBytes(bytes: ByteArray) {
     thread(isDaemon = true) {
-      outputStream.write(bytes)
-      outputStream.flush()
+      try {
+        outputStream.write(bytes)
+        outputStream.flush()
+      } catch (e: IOException) {
+        println("Oops.")
+      }
     }
   }
 
