@@ -101,13 +101,11 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
   }
 
   private fun writeBytes(bytes: ByteArray) {
-    thread(isDaemon = true) {
-      try {
-        outputStream.write(bytes)
-        outputStream.flush()
-      } catch (e: IOException) {
-        println("Oops.")
-      }
+    try {
+      outputStream.write(bytes)
+      outputStream.flush()
+    } catch (e: IOException) {
+      println("Sending failed.")
     }
   }
 
@@ -125,7 +123,7 @@ class BlueSimplePlugin: FlutterPlugin, MethodCallHandler {
         sb.append(readByte.toChar())
       }
     } catch (e: IOException) {
-      println(e)
+      println("Reading failed.")
     }
     return sb.toString()
   }
